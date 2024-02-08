@@ -25,6 +25,17 @@ const Home = () => {
     console.log('disconnect');
     
   })
+
+  socket?.on('chat_msg', (data:any) => {
+    console.log('data received from back',data);
+    
+
+  })
+
+  socket?.on('list_msg',(data:any) => {
+    console.log('list msg recv',data);
+    
+  })
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -78,6 +89,7 @@ const Home = () => {
     console.log('message',message.content);
     
     socket.emit('chat',message.content)
+    socket.emit('list',message.content)
 
     setMessages(updatedMessages);
     setLoading(true);

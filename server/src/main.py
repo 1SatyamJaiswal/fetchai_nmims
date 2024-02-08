@@ -3,6 +3,7 @@ from uagents import Bureau
 # from agents import decision_forecasting_agent
 # from agents import chat_support_agent
 from agents import customer_chat_agent
+from agents import shop_list_agent
 
 if __name__ == "__main__":
     bureau = Bureau(endpoint="http://127.0.0.1:8099/submit", port=8099)
@@ -20,5 +21,8 @@ if __name__ == "__main__":
     
     print(f"Adding customer chat agent to Bureau: {customer_chat_agent.address}")
     bureau.add(customer_chat_agent)
+    
+    print(f"Adding shop list agent to Bureau: {shop_list_agent.address}")
+    bureau.add(shop_list_agent)
     
     bureau.run()
