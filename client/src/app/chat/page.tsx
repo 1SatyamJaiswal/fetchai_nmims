@@ -77,12 +77,12 @@ const Home = () => {
 
         // Stop the camera stream
         stream.getTracks().forEach((track) => track.stop());
-        handleSend({role:"user", content: imageDataUrl});
+        handleSend({ role: "user", content: imageDataUrl });
       });
     } catch (error) {
       console.error("Error accessing camera:", error);
     }
-  }
+  };
 
   const handleSend = async (message: Message) => {
     const updatedMessages = [...messages, message];
@@ -173,7 +173,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen w-full relative">
+      <div className="flex flex-col h-screen w-full">
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[1200px] mx-auto mt-4 sm:mt-12">
             <Chat
@@ -184,15 +184,8 @@ const Home = () => {
             />
             <div ref={messagesEndRef} />
           </div>
+          {/* Floating button for uploading checklist */}
         </div>
-
-        {/* Floating button for uploading checklist */}
-        <button
-          onClick={handleChecklistUpload}
-          className="fixed top-24 right-10 p-3 bg-green-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
-          Upload Checklist
-        </button>
       </div>
     </>
   );

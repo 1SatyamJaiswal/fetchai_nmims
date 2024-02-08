@@ -13,11 +13,11 @@ interface Props {
 
 export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     // Scroll to the bottom when messages change
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 

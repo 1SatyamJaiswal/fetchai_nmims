@@ -3,30 +3,30 @@ from uagents.setup import fund_agent_if_low
 import os
 # from pydantic import Field
 from messages import ChatSupportMessage,  CustomerAssistantMessage, MessageType
-# from langchain.llms import GooglePalm
-# from urllib.parse import quote
-# from langchain.utilities import SQLDatabase
-# from langchain_experimental.sql import SQLDatabaseChain
+from langchain.llms import GooglePalm
+from urllib.parse import quote
+from langchain.utilities import SQLDatabase
+from langchain_experimental.sql import SQLDatabaseChain
 
 
 
-# api_key = 'AIzaSyD5CxIhibptIhPQywB0bu0smv5kngROqs8'
-# llm = GooglePalm(google_api_key=api_key, temperature=0.2)
+api_key = 'AIzaSyD5CxIhibptIhPQywB0bu0smv5kngROqs8'
+llm = GooglePalm(google_api_key=api_key, temperature=0.2)
 
-# ## Database Credentials
-# db_user = "root"
-# db_password = "D_boss@18"
-# db_host = "127.0.0.1"
-# db_name = "grocery"
+## Database Credentials
+db_user = "root"
+db_password = "D_boss@18"
+db_host = "127.0.0.1"
+db_name = "grocery"
 
-# encoded_password = quote(db_password)
-# mysql_uri = f"sqlite:///inventory.db"
+encoded_password = quote(db_password)
+mysql_uri = f"sqlite:///inventory.db"
     
-# # print(mysql_uri)
-# db = SQLDatabase.from_uri(mysql_uri,sample_rows_in_table_info=3)
+# print(mysql_uri)
+db = SQLDatabase.from_uri(mysql_uri,sample_rows_in_table_info=3)
 
-# # print(db.table_info)
-# db_chain = SQLDatabaseChain.from_llm(llm, db)
+# print(db.table_info)
+db_chain = SQLDatabaseChain.from_llm(llm, db)
 
 # CHAT_SUPPORT_SEED = os.environ.get("CHAT_SUPPORT_SEED", "chat support agent")
 CUSTOMER_CHAT_SEED = os.environ.get("CUSTOMER_CHAT_SEED", "customer chat agent")
