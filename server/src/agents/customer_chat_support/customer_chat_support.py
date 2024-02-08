@@ -52,4 +52,5 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     # qns = db_chain(msg.query)
     # print(qns,type(qns))
     # await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply=qns['result']))
+    ctx.logger.info(f"Chat Support Agent Received Message from {sender}")
     await ctx.send(sender, CustomerAssistantMessage(msg_type=MessageType.CHAT,msg="I am a chat support agent, I am here to help you with your queries"))

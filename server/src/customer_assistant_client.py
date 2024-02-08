@@ -12,9 +12,9 @@ IENT_SEED = "customer assistant client"
 
 logging.getLogger('socketio').setLevel(logging.ERROR)
 
-CUSTOMER_ASSISTANT_CLIENT_SEED = "customer assistant client"
+CUSTOMER_ASSISTANT_CLIENT_SEED = "customer assistant"
 
-CUSTOMER_CHAT_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
+CUSTOMER_CHAT_AGENT_ADDRESS = "agent1qfw0hgvndkq2e9je7gxqgp5qkpqkgdu3gnyh2c9rjrmx53al756nuze2er4"
 # SHOPPING_LIST_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
 # PROD_IMG_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
 
@@ -60,6 +60,13 @@ async def chat(sid,data):
     print("received chat: " + data)
     await sio.emit("chat", data)
     customer_assistant_client._ctx.logger.info(f"Chat: {data}")
+    await customer_assistant_client._ctx.send(CUSTOMER_CHAT_AGENT_ADDRESS, ChatSupportMessage(query=data))
+    
+@sio.event
+async def list(sid,data):
+    print("received list: " + data)
+    await sio.emit("list", data)
+    customer_assistant_client._ctx.logger.info(f"List: {data}")
     await customer_assistant_client._ctx.send(CUSTOMER_CHAT_AGENT_ADDRESS, ChatSupportMessage(query=data))
 
 
