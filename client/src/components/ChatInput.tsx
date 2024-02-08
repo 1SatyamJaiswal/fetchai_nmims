@@ -2,7 +2,11 @@
 import { Message } from "@/app/types";
 // import { IconArrowUp } from "@tabler/icons";
 import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { PaperAirplaneIcon, CameraIcon } from "@heroicons/react/24/outline";
+import {
+  PaperAirplaneIcon,
+  CameraIcon,
+  CheckCircleIcon,
+} from "@heroicons/react/24/outline";
 interface Props {
   onSend: (message: Message) => void;
 }
@@ -17,6 +21,7 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
       textareaRef.current.style.height = `${textareaRef.current?.scrollHeight}px`;
     }
   }, [content]);
+
   const handleOpenCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -24,7 +29,7 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
 
       video.srcObject = stream;
       video.play();
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -41,7 +46,7 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
         const imageDataUrl = canvas.toDataURL("image/png");
 
         // Set the base64 data URL as the value of the input
-        setContent(imageDataUrl);
+        onSend({ role: "user", content: imageDataUrl });
 
         // Stop the camera stream
         stream.getTracks().forEach((track) => track.stop());
@@ -85,18 +90,18 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
   }, [content]);
 
   return (
-    <div className="flex items-center relative">
+    <div className="flex items-center relative mt-2">
       <button
         onClick={handleOpenCamera}
         className="rounded-l-lg p-2 text-blue-500 hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 absolute left-0 z-2"
       >
-        <CameraIcon className="h-8 w-8" />
+        <CameraIcon className="h-6 w-6" />
       </button>
       <video ref={videoRef} className="hidden" />
       <input
         ref={textareaRef}
         type="text"
-        className="min-h-[44px] rounded-l-lg pl-12 pr-2 py-2 w-full focus:outline-none focus:ring-1 focus:ring-neutral-300 border-2 border-neutral-200"
+        className="min-h-[44px] rounded-l-lg pl-10 pr-2 py-3 w-full focus:outline-none focus:ring-1 focus:ring-neutral-300 border-2 border-neutral-200"
         placeholder="Type your message..."
         value={content}
         onChange={handleChange}

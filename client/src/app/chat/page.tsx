@@ -13,6 +13,44 @@ const Home = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleChecklistUpload = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement("video");
+
+      video.srcObject = stream;
+      video.play();
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      video.addEventListener("loadeddata", () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert canvas content to base64 data URL
+        const imageDataUrl = canvas.toDataURL("image/png");
+
+        // Set the base64 data URL as the value of the input
+        setMessages((messages) => [
+          ...messages,
+          {
+            role: "user",
+            content: imageDataUrl,
+          },
+        ]);
+
+        // Stop the camera stream
+        stream.getTracks().forEach((track) => track.stop());
+        handleSend({role:"user", content: imageDataUrl});
+      });
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+    }
+  }
+
   const handleSend = async (message: Message) => {
     const updatedMessages = [...messages, message];
 
@@ -98,7 +136,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen w-full">
+      <div className="flex flex-col h-screen w-full relative">
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[1200px] mx-auto mt-4 sm:mt-12">
             <Chat
@@ -110,6 +148,14 @@ const Home = () => {
             <div ref={messagesEndRef} />
           </div>
         </div>
+
+        {/* Floating button for uploading checklist */}
+        <button
+          onClick={handleChecklistUpload}
+          className="fixed top-24 right-10 p-3 bg-green-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        >
+          Upload Checklist
+        </button>
       </div>
     </>
   );
