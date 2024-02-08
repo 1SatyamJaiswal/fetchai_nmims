@@ -1,13 +1,22 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit, send
+# from flask import Flask, render_template
+# from flask_socketio import SocketIO, emit, send
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 from messages import ChatSupportMessage, CustomerAssistantMessage
 import threading
+import logging
+import socketio
+from aiohttp import web
+
+IENT_SEED = "customer assistant client"
+
+logging.getLogger('socketio').setLevel(logging.ERROR)
 
 CUSTOMER_ASSISTANT_CLIENT_SEED = "customer assistant client"
 
-CUSTOMER_CHAT_AGENT_ADDRESS = ""
+CUSTOMER_CHAT_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
+# SHOPPING_LIST_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
+# PROD_IMG_AGENT_ADDRESS = "agent1qf9gytta8hw79jdcltefv8nkp44khfx2aj73u2ygxdlppdy6qeenqfjxuzf"
 
 customer_assistant_client = Agent(
     name="customer_assistant_client",
@@ -27,34 +36,39 @@ async def on_message(ctx: Context, sender: str, msg: ChatSupportMessage):
     print(f"Chat Support Message: {msg}")
 
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "secret!"
-socketio = SocketIO(app)
+# app = Flask(__name__)
+# app.config["SECRET_KEY"] = "secret!"
+# socketio = SocketIO(app, cors_allowed_origins="*",async_mode="eventlet")
+
+# sio = socketio.AsyncServer()
+sio = socketio.AsyncServer(cors_allowed_origins="*", logger=False)
+app = web.Application()
+sio.attach(app)
+@sio.event
+async def connect(sid,environ):
+    print("Client connected",sid)
+    await sio.emit('my response', {'data': 'Connected'})
 
 
-@socketio.on("connect")
-def test_connect(auth):
-    print("Client connected", auth)
-    # emit('my response', {'data': 'Connected'})
+# @sio.event
+# def test_disconnect():
+#     print("Client disconnected")
 
 
-@socketio.on("disconnect")
-def test_disconnect():
-    print("Client disconnected")
-
-
-@socketio.on("chat")
-def handle_chat(data):
+@sio.event
+async def chat(sid,data):
     print("received chat: " + data)
-    emit("chat", data, broadcast=True)
+    await sio.emit("chat", data)
     customer_assistant_client._ctx.logger.info(f"Chat: {data}")
+    await customer_assistant_client._ctx.send(CUSTOMER_CHAT_AGENT_ADDRESS, ChatSupportMessage(query=data))
 
 
 if __name__ == "__main__":
     # socket_thread = threading.Thread(target=socketio.run, args=(app,), kwargs={"debug": True, "port": 6000})
     agent_thread = threading.Thread(target=customer_assistant_client.run)
     
-    agent_thread.start()    
-    # socket_thread.start()
-    socketio.run(app, debug=True, port=5000)
+    # agent_thread.start()    
+    # socket_thread.    start()
+    # socketio.run(app, debug=True, port=7789)
+    web.run_app(app, port=7789) 
     agent_thread.join()

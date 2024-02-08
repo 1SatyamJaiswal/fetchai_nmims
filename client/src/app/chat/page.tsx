@@ -1,83 +1,108 @@
-"use client";
-import { Chat } from "@/components/Chat";
-import { Message } from "@/app/types";
-import { useEffect, useRef, useState } from "react";
+'use client';
+import { Chat } from '@/components/Chat';
+import { Message } from '@/app/types';
+import { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client';
+import { emit } from 'process';
+let socket:any = null;
 
 const Home = () => {
+  useEffect(() => {
+    socket = io('http://localhost:7789');
+
+    
+    return () => {
+      socket.disconnect()
+      // socket = null
+    }
+  }, []);
+
+  socket?.on('connect', (sid: any) => {
+    console.log('connected', sid);
+  });
+
+  socket?.on('disconnect',() => {
+    console.log('disconnect');
+    
+  })
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSend = async (message: Message) => {
     const updatedMessages = [...messages, message];
+    console.log('message',message.content);
+    
+    socket.emit('chat',message.content)
 
     setMessages(updatedMessages);
     setLoading(true);
 
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messages: updatedMessages,
-      }),
-    });
+    // const response = await fetch("/api/chat", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     messages: updatedMessages,
+    //   }),
+    // });
 
-    if (!response.ok) {
-      setLoading(false);
-      throw new Error(response.statusText);
-    }
+    // if (!response.ok) {
+    //   setLoading(false);
+    //   throw new Error(response.statusText);
+    // }
 
-    const data = response.body;
+    // const data = response.body;
 
-    if (!data) {
-      return;
-    }
+    // if (!data) {
+    //   return;
+    // }
 
     setLoading(false);
 
-    const reader = data.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-    let isFirst = true;
+    // const reader = data.getReader();
+    // const decoder = new TextDecoder();
+    // let done = false;
+    // let isFirst = true;
 
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
+    // while (!done) {
+    //   const { value, done: doneReading } = await reader.read();
+    //   done = doneReading;
+    //   const chunkValue = decoder.decode(value);
 
-      if (isFirst) {
-        isFirst = false;
-        setMessages((messages) => [
-          ...messages,
-          {
-            role: "assistant",
-            content: chunkValue,
-          },
-        ]);
-      } else {
-        setMessages((messages) => {
-          const lastMessage = messages[messages.length - 1];
-          const updatedMessage = {
-            ...lastMessage,
-            content: lastMessage.content + chunkValue,
-          };
-          return [...messages.slice(0, -1), updatedMessage];
-        });
-      }
-    }
+    //   if (isFirst) {
+    //     isFirst = false;
+    //     setMessages((messages) => [
+    //       ...messages,
+    //       {
+    //         role: "assistant",
+    //         content: chunkValue,
+    //       },
+    //     ]);
+    //   } else {
+    //     setMessages((messages) => {
+    //       const lastMessage = messages[messages.length - 1];
+    //       const updatedMessage = {
+    //         ...lastMessage,
+    //         content: lastMessage.content + chunkValue,
+    //       };
+    //       return [...messages.slice(0, -1), updatedMessage];
+    //     });
+    //   }
+    // }
   };
 
   const handleReset = () => {
     setMessages([
       {
-        role: "assistant",
+        role: 'assistant',
         content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`,
       },
     ]);
@@ -90,7 +115,7 @@ const Home = () => {
   useEffect(() => {
     setMessages([
       {
-        role: "assistant",
+        role: 'assistant',
         content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`,
       },
     ]);

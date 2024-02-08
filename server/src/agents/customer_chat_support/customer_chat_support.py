@@ -2,7 +2,7 @@ from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 import os
 # from pydantic import Field
-from messages import ChatSupportMessage, InventoryAssistantMessage, AgentType
+from messages import ChatSupportMessage,  CustomerAssistantMessage, MessageType
 # from langchain.llms import GooglePalm
 # from urllib.parse import quote
 # from langchain.utilities import SQLDatabase
@@ -52,5 +52,4 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     # qns = db_chain(msg.query)
     # print(qns,type(qns))
     # await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply=qns['result']))
-    await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply="I am a chat support agent, I am here to help you with your queries"))
-    pass
+    await ctx.send(sender, CustomerAssistantMessage(msg_type=MessageType.CHAT,msg="I am a chat support agent, I am here to help you with your queries"))

@@ -6,12 +6,12 @@ from messages import ChatSupportMessage, InventoryAssistantMessage, AgentType
 # from langchain.llms import GooglePalm
 # from urllib.parse import quote
 # from langchain.utilities import SQLDatabase
-from langchain_experimental.sql import SQLDatabaseChain
+# from langchain_experimental.sql import SQLDatabaseChain
 
 
 
 api_key = 'AIzaSyD5CxIhibptIhPQywB0bu0smv5kngROqs8'
-llm = GooglePalm(google_api_key=api_key, temperature=0.2)
+# llm = GooglePalm(google_api_key=api_key, temperature=0.2)
 
 ## Database Credentials
 db_user = "root"
