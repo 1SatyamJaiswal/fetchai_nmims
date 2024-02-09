@@ -1,8 +1,8 @@
 "use client"
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
-import { ChatIcon } from '@heroicons/react/solid'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import {  ChatBubbleBottomCenterIcon } from '@heroicons/react/24/solid'
 import ChatInterface from './ChatInterface'
 
 export default function ChatBot() {
@@ -14,10 +14,10 @@ export default function ChatBot() {
       {/* Chat icon */}
       <button
         type="button"
-        className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4"
+        className="inline-flex items-center p-3 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4"
         onClick={() => setOpen(true)}
       >
-        <ChatIcon className="h-10 w-10" aria-hidden="true" />
+        <ChatBubbleBottomCenterIcon className="h-10 w-10" aria-hidden="true" />
       </button>
     </div>
     <Transition.Root show={open} as={Fragment}>
@@ -64,7 +64,7 @@ export default function ChatBot() {
                       >
                         <span className="absolute -inset-2.5" />
                         <span className="sr-only">Close panel</span>
-                        <XIcon className="h-6 w-6" aria-hidden="true" />
+                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
                     </div>
                   </Transition.Child>

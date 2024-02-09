@@ -2,32 +2,43 @@ import React, { useEffect, useState } from 'react';
 import 'react-chat-elements/dist/main.css';
 import { MessageBox } from 'react-chat-elements';
 import { Listbox, Transition } from '@headlessui/react'
-import { SocketContext } from '@/app/layout';
-import { title } from 'process';
+// import { SocketContext } from '@/app/layout';
+// import { title } from 'process';
+import io from 'socket.io-client'
+let socket:any = null;
 
 function ChatInterface() {
   const [query, setQuery] = useState("")
   const [messages, setMessages] = useState<any[]>([])
-  const socket = React.useContext(SocketContext);
+  // const socket = React.useContext(SocketContext);
 
   const query_response = (data:any) => {
-    console.log(data);
-    setMessages([...messages, {position: 'left', type: 'text', text: data.data,title:'Inventory assistant'}]);
+    console.log(data,messages);
+    // setMessages([...messages, {position: 'left', type: 'text', text: data.data,title:'Inventory assistant'}]);
+    const new_msg ={position: 'left', type: 'text', text: data.data,title:'Inventory assistant'}
+    setMessages(prev => [...prev,new_msg])
   }
   
 
   useEffect(() => {
+    socket = io('http://localhost:5000')
     socket?.on('query_response', query_response);
     return () => {
-      socket?.off('query_response', query_response);
+      socket?.disconnect('query_response', query_response);
     };
-  }
+  },[]
   );
 
   const send_query = ()=> {
-    socket?.connect();
     console.log(query);
-    setMessages([...messages, {position: 'right', type: 'text', text: query,title: 'You'}]);
+    // setMessages([...messages, {position: 'right', type: 'text', text: query,title: 'You'}]);
+    const new_msg ={
+      type: 'text',
+      position: 'right',
+      text: query,
+      title: 'You'
+    }
+    setMessages((prev => [...prev,new_msg]))
     socket?.emit('query', {query: query});
     setQuery("");
   }
@@ -46,13 +57,6 @@ function ChatInterface() {
       ))
       }
       </div>
-
-      {/* <MessageBox
-        position={'left'}
-        type={'text'}
-        title={'Message Box Title'}
-        text="Here is a text type message box"
-      /> */}
        <div className="flex items-start space-x-4">
       <div className="min-w-0 flex-1">
         <div className="relative">

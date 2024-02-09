@@ -4,3 +4,4 @@ from .crud.crud_agent import agent as crud_agent
 from .customer_chat_support.customer_chat_support import agent as customer_chat_agent
 # from .customer_chat_support.
 from .shop_list.shop_list_agent import agent as shop_list_agent
+from .admin_chat_support.admin_chat_support import agent as admin_chat_agent
