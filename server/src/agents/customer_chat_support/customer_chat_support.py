@@ -21,7 +21,9 @@ db_password = "D_boss@18"
 db_host = "127.0.0.1"
 db_name = "grocery"
 
-encoded_password = quote(db_password)
+# encoded_password = quote(db_password)
+# current_directory = os.getcwd()
+# database_file_path = os.path.join(current_directory, '..', 'inventory.db')
 mysql_uri = f"sqlite:///inventory.db"
     
 # print(mysql_uri)
@@ -62,7 +64,7 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     "ingredients": [List of all ingredients]
     }""")
     response = llm(msg)
-    connection = sqlite3.connect(db_path)
+    connection = sqlite3.connect(mysql_uri)
     cursor = connection.cursor()
 
     # Convert the ingredients list to a tuple for SQL query
