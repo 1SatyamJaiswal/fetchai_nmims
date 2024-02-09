@@ -7,6 +7,7 @@ from langchain.llms import GooglePalm
 from urllib.parse import quote
 from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
+from langchain.prompts import PromptTemplate
 
 
 
@@ -48,5 +49,7 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     print("query received", msg.query)
     qns = db_chain(msg.query)
     print(qns,type(qns))
-    await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply=qns['result']))
+    prompt1 = PromptTemplate.from_template("query:{query}\nanswer:{result}\nSummarize the above information").format(query=msg.query,result=qns['result'])
+    res = llm(prompt1)
+    await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply=res))
     # await ctx.send(sender, InventoryAssistantMessage(type=AgentType.CHAT_SUPPORT,reply="I am a chat support agent, I am here to help you with your queries"))

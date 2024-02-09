@@ -9,6 +9,7 @@ from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
 from langchain.prompts import PromptTemplate
 import sqlite3
+import json
 
 
 
@@ -64,20 +65,38 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     "ingredients": [List of all ingredients]
     }""")
     response = llm(msg)
-    connection = sqlite3.connect(mysql_uri)
+    connection = sqlite3.connect("C:\\Users\\Siddhant Rao\\Desktop\\fetchai_nmims\\server\\src\\inventory.db")
     cursor = connection.cursor()
 
     # Convert the ingredients list to a tuple for SQL query
     ingredients_tuple = tuple(response)
 
+    # print(ingredients_tuple)
+    res = list(ingredients_tuple)
+    ans = "".join(res)
+    # print(ans)
+    
+    obj = json.loads(ans)
+    print(obj['ingredients'])
+    # json string to object
+    
+    
+    ingredients = obj['ingredients']
     # Use a parameterized query to select products that match the specified ingredients
-    query = f"SELECT * FROM products WHERE product_name IN {ingredients_tuple};"
+    query = f"SELECT * FROM product WHERE product_name IN {tuple(ingredients)};"
+    # ingredient_placeholders = ','.join(['%s' for _ in range(len(ingredients))])  # Create placeholders dynamically
+    # query_with_placeholders = query % ingredient_placeholders
+    # print(query_with_placeholders)
 
     # Execute the query and fetch the results
+    # cursor.execute(query_with_placeholders,ingredients)
     cursor.execute(query)
     results = cursor.fetchall()
 
     # Close the database connection
     connection.close()
     ctx.logger.info(f"Chat Support Agent Received Message from {sender}")
-    await ctx.send(sender, CustomerAssistantMessage(msg_type=MessageType.CHAT,msg=results))
+    print(results)
+    # print(json.dumps(results))
+    res = json.dumps(results)
+    await ctx.send(sender, CustomerAssistantMessage(msg_type=MessageType.CHAT,msg=res))

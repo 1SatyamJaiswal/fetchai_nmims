@@ -64,7 +64,7 @@ db = SQLDatabase.from_uri(mysql_uri,sample_rows_in_table_info=3)
 # "ingredients": [List of all ingredients]
 # }""")
 # response = llm(msg)
-connection = sqlite3.connect(mysql_uri)
+connection = sqlite3.connect("C:\\Users\\Siddhant Rao\\Desktop\\fetchai_nmims\\server\\src\\inventory.db")
 # cursor = connection.cursor()
 
 # # Convert the ingredients list to a tuple for SQL query
