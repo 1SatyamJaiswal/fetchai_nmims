@@ -32,14 +32,12 @@ export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
             <ChatMessage message={message} />
           </div>
         ))}
-      </div>
-
-      {loading && (
+        {loading && (
         <div className="my-1 sm:my-1.5">
           <ChatLoader />
         </div>
       )}
-
+      </div>
       <div className="mt-4 sm:mt-8 left-0 w-full absolute bottom-0 px-2">
         <ChatInput onSend={onSend} />
       </div>
