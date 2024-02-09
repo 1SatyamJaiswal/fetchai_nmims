@@ -1,49 +1,61 @@
-'use client';
-import { Chat } from '@/components/Chat';
-import { Message } from '@/app/types';
-import { useEffect, useRef, useState } from 'react';
-import io from 'socket.io-client';
-import { emit } from 'process';
-let socket:any = null;
+"use client";
+import { Chat } from "@/components/Chat";
+import { Message } from "@/app/types";
+import { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
+import { emit } from "process";
+let socket: any = null;
 
 const Home = () => {
   useEffect(() => {
-    socket = io('http://localhost:7789');
+    socket = io("http://localhost:7789");
+    socket?.on("connect", (sid: any) => {
+      console.log("connected", sid);
+    });
 
-    
+    socket?.on("disconnect", () => {
+      console.log("disconnect");
+    });
+
+    socket?.on("chat_msg", (data: any) => {
+      console.log("data received from back", data);
+      setMessages((messages) => [
+        ...messages,
+        {
+          role: "assistant",
+          content: data,
+        },
+      ]);
+      setLoading(false);
+    });
+
+    socket?.on("list_msg", (data: any) => {
+      setMessages((messages) => [
+        ...messages,
+        {
+          role: "assistant",
+          content: data,
+        },
+      ]);
+      setLoading(false);
+    });
     return () => {
-      socket.disconnect()
+      socket.disconnect();
       // socket = null
-    }
+    };
   }, []);
 
-  socket?.on('connect', (sid: any) => {
-    console.log('connected', sid);
-  });
-
-  socket?.on('disconnect',() => {
-    console.log('disconnect');
-    
-  })
-
-  socket?.on('chat_msg', (data:any) => {
-    console.log('data received from back',data);
-    
-
-  })
-
-  socket?.on('list_msg',(data:any) => {
-    console.log('list msg recv',data);
-    
-  })
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  function isBase64Image(content: string) {
+    return /^data:image\/.*;base64,/.test(content);
+  }
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleChecklistUpload = async () => {
@@ -86,10 +98,13 @@ const Home = () => {
 
   const handleSend = async (message: Message) => {
     const updatedMessages = [...messages, message];
-    console.log('message',message.content);
-    
-    socket.emit('chat',message.content)
-    socket.emit('list',message.content)
+    console.log("message", message.content);
+
+    if (isBase64Image(message.content)) {
+      socket.emit("list", message.content);
+    } else {
+      socket.emit("chat", message.content);
+    }
 
     setMessages(updatedMessages);
     setLoading(true);
@@ -115,7 +130,7 @@ const Home = () => {
     //   return;
     // }
 
-    setLoading(false);
+    //setLoading(false);
 
     // const reader = data.getReader();
     // const decoder = new TextDecoder();
@@ -152,7 +167,7 @@ const Home = () => {
   const handleReset = () => {
     setMessages([
       {
-        role: 'assistant',
+        role: "assistant",
         content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`,
       },
     ]);
@@ -165,7 +180,7 @@ const Home = () => {
   useEffect(() => {
     setMessages([
       {
-        role: 'assistant',
+        role: "assistant",
         content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`,
       },
     ]);
