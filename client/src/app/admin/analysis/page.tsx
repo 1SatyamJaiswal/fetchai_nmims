@@ -14,6 +14,7 @@ import {
   LineElement,
   Filler,
 } from "chart.js";
+import Forecast from "@/components/Forecast";
 
 const testData = [
   { testNo: 1, score: 80 },
@@ -132,7 +133,7 @@ const AnalysisPage = () => {
     },
   };
   return (
-    <div className="w-full h-[100vh] flex flex-col items-center justify-center">
+    <div className="w-full h-[100vh] flex flex-col items-center mt-20">
       <div className="mt-2 mb-10">
         <h1>Select Product to Get Detailed Analysis</h1> 
         <select
@@ -153,15 +154,16 @@ const AnalysisPage = () => {
         style={{
           width: "1000px",
           height: "400px",
-          overflowX: "auto",
+          // overflowX: "auto",
         }}
       >
-        <Line data={chartData} options={chartOptions} />
+        {/* <Line data={chartData} options={chartOptions} /> */}
+        <Forecast/>
       </div>
-        <div className="flex gap-6 mt-8">
+        {/* <div className="flex gap-6 mt-8">
       <button onClick={handlePrevClick} className="bg-indigo-600 text-white p-2 rounded-md w-48">Previous 5 Days</button>
       <button onClick={handleNextClick} className="bg-indigo-600 text-white p-2 rounded-md w-48">Next 5 Days</button>
-      </div>
+      </div> */}
     </div>
   );
 };

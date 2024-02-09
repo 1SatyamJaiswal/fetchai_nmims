@@ -1,10 +1,10 @@
 "use client";
 import { Fragment, useContext, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/outline";
-import { UserCircleIcon } from "@heroicons/react/solid";
-import { SocketContext } from "@/app/layout";
-
+// import { CheckIcon } from "@heroicons/react/outline";
+// import { UserCircleIcon } from "@heroicons/react/solid";
+// import { SocketContext } from "@/app/layout";
+// 
 interface ExampleComponentProps {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -33,19 +33,19 @@ const RestockModal: React.FC<ExampleComponentProps> = ({ open, setOpen }) => {
   const [amount, setAmount] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [product, setProduct] = useState(1);
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
   const handleItemSell = () => {
     console.log("id: ", product);
     console.log("Quantity: ", quantity);
     console.log("Amount: ", amount);
 
-    socket?.emit("restock", {
-      mode: "restock",
-      id: product,
-      quantity: quantity,
-      amount: amount,
-    });
+    // socket?.emit("restock", {
+    //   mode: "restock",
+    //   id: product,
+    //   quantity: quantity,
+    //   amount: amount,
+    // });
 
     setOpen(false);
   };

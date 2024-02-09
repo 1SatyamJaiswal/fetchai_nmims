@@ -3,26 +3,24 @@ import sqlite3
 con = sqlite3.connect('inventory.db')
 
 cur = con.cursor()
-
-# cur.execute("-- Create Supplier Table
+# -- Create Supplier Table
+# cur.execute("""
 # CREATE TABLE Supplier (
 #     Supplier_id INT PRIMARY KEY,
 #     Supplier_name VARCHAR(255),
 #     Supplier_mobile_no VARCHAR(20),
 #     Supplier_email VARCHAR(255)
-# );
+# );""");
 
 # -- Insert data for the four suppliers
-# INSERT INTO Supplier (Supplier_id, Supplier_name, Supplier_mobile_no, Supplier_email)
-# VALUES
-# (1, 'Siddhant', '1234567890', 'siddhant@example.com'),
-# (2, 'Vikas', '9876543210', 'vikas@example.com'),
-# (3, 'Satyam', '8765432109', 'satyam@example.com'),
-# (4, 'Navneet', '7890123456', 'navneet@example.com');
+# cur.execute("INSERT INTO Supplier VALUES((1, 'Siddhant', '1234567890', 'siddhant@example.com'),(2, 'Vikas', '9876543210', 'vikas@example.com'),(3, 'Satyam', '8765432109', 'satyam@example.com'),(4, 'Navneet', '7890123456', 'navneet@example.com'));")
 
 # res = cur.execute("INSERT INTO Supplier (Supplier_id, Supplier_name, Supplier_mobile_no, Supplier_email) VALUES (1, 'Siddhant', '1234567890', 'siddhant@example.com'), (2, 'Vikas', '9876543210', 'vikas@example.com'), (3, 'Satyam', '8765432109', 'satyam@example.com'), (4, 'Navneet', '7890123456', 'navneet@gmail.com');")
 
 # con.commit()
+
+# res = cur.execute("CREATE TABLE Product (Product_id INT PRIMARY KEY, Product_name VARCHAR(255), Photo VARCHAR(255), Purchase DATE, Shelf_life INT, Purchase_price INT, Selling_Price INT, Qty INT, Supplier_id INT, Category INT);")
+
 
 # res = cur.execute("""INSERT INTO Product (Product_id, Product_name, Photo, Purchase, Shelf_life, Purchase_price, Selling_Price, Qty, Supplier_id, Category)
 # VALUES
@@ -64,16 +62,16 @@ cur = con.cursor()
 #     END
 # WHERE Category IN (3, 4)
 #                   """)
+# con.commit()
 
 res = cur.execute("SELECT * FROM Product")
 
-# con.commit()
 
-print(res.fetchall())
+# print(res.description)
 
 # res = cur.execute("SELECT * FROM Supplier")
 
-# print(res.fetchall())
+print(res.fetchall())
 
 # res = cur.execute("SELECT name FROM sqlite_master")
 # print(res.description)

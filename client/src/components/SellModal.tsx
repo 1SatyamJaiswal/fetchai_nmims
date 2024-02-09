@@ -33,7 +33,7 @@ const SellModal: React.FC<ExampleComponentProps> = ({ open, setOpen }) => {
   const [amount, setAmount] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [product, setProduct] = useState(1);
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
   const handleItemSell = () => {
     console.log("id: ", product);
@@ -42,13 +42,13 @@ const SellModal: React.FC<ExampleComponentProps> = ({ open, setOpen }) => {
 
     // socket?.connect();
 
-    socket?.emit("sell", {
-      mode: "sell",
-      id: product,
-      quantity: quantity,
-      amount: amount,
-      name: products.filter(prod => prod.id == Number(product))[0].name,
-    });
+    // socket?.emit("sell", {
+    //   mode: "sell",
+    //   id: product,
+    //   quantity: quantity,
+    //   amount: amount,
+    //   name: products.filter(prod => prod.id == Number(product))[0].name,
+    // });
 
 
     setOpen(false);
