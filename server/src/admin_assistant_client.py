@@ -104,21 +104,21 @@ async def message_handler(ctx: Context, sender: str, msg: InventoryAssistantMess
         await sio.emit("query_response", {"data": msg.reply})
 
 
-# @inventory_assistant_client.on_interval(period=60)
-# async def send_message(ctx: Context):
+@inventory_assistant_client.on_interval(period=60)
+async def send_message(ctx: Context):
     # check if any product is low in stock
     # if yes send message to the chat support agent
-    # con = sqlite3.connect('inventory.db')
-    # cur = con.cursor()
+    con = sqlite3.connect('inventory.db')
+    cur = con.cursor()
     
-    # res = cur.execute("SELECT * FROM PRODUCT WHERE qty < 40").fetchall()
+    res = cur.execute("SELECT * FROM PRODUCT WHERE qty < 40").fetchall()
     
-    # for row in res:
-    #     await sio.emit('query_response', {'data': f"Product {row[1]} is low in stock, {row[7]} units are left."})
-    #     # await ctx.logger.info(f"Inventory Assistant Client Sent restock reminder ")
-    #     print(f"Product {row[1]} is low in stock, {row[7]} units are left.")
+    for row in res:
+        await sio.emit('query_response', {'data': f"Product {row[1]} is low in stock, {row[7]} units are left."})
+        # await ctx.logger.info(f"Inventory Assistant Client Sent restock reminder ")
+        print(f"Product {row[1]} is low in stock, {row[7]} units are left.")
         
-    # await sio.emit('query_response', {'data': "Please restock the products"})
+    await sio.emit('query_response', {'data': "Please restock the products"})
     
     
 

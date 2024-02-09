@@ -176,10 +176,10 @@ export default function Home() {
             {/* <Forecast/>/ */}
             <Sales/>
           </div>
-
+{/* 
           <h2 className="max-w-6xl mx-auto mt-8 px-4 text-lg leading-6 font-medium text-gray-900 sm:px-6 lg:px-8">
             Recent Activities
-          </h2>
+          </h2> */}
 
           <div className="shadow sm:hidden">
             <ul role="list" className="mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden">
@@ -216,7 +216,7 @@ export default function Home() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 ">
               <div className="flex flex-col mt-2">
                 <div className="align-middle min-w-full overflow-x-auto shadow overflow-hidden sm:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200">
+                  {/* <table className="min-w-full divide-y divide-gray-200">
                     <thead>
                       <tr>
                         <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -234,9 +234,7 @@ export default function Home() {
                         <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Time
                         </th>
-                        {/* <th className="px-6 py-3 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Type
-                        </th> */}
+                        
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 self-center ">
@@ -250,7 +248,7 @@ export default function Home() {
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500">
                             <span className="text-gray-900 font-medium">{transaction[4]} </span>
-                            {/* {transaction.currency} */}
+                            
                           </td>
                           <td className="px-6 py-4 text-right whitespace-nowrap text-sm text-gray-500">
                             <time>{new Date(transaction[1]).toLocaleDateString()}</time>
@@ -262,13 +260,13 @@ export default function Home() {
                             <span
                         
                             >
-                              {/* {transaction.status} */}
+                             
                             </span>
                           </td>
                         </tr>
                       ))}
                     </tbody>
-                  </table>
+                  </table> */}
                 </div>
               </div>
             </div>

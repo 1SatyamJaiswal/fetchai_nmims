@@ -62,10 +62,10 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     Query: {Query}""")
 
     msg = prompt.format(Query=msg.query, sample="""Sample response: {
-    "ingredients": [List of all ingredients]
+    "ingredients": ["Milk", "Paneer"]
     }""")
     response = llm(msg)
-    connection = sqlite3.connect("C:\\Users\\Siddhant Rao\\Desktop\\fetchai_nmims\\server\\src\\inventory.db")
+    connection = sqlite3.connect("C:\\Users\\Dell\\Desktop\\fetchai_nmims\\server\\inventory.db")
     cursor = connection.cursor()
 
     # Convert the ingredients list to a tuple for SQL query
@@ -75,7 +75,7 @@ async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
     res = list(ingredients_tuple)
     ans = "".join(res)
     # print(ans)
-    
+    print(ans)
     obj = json.loads(ans)
     print(obj['ingredients'])
     # json string to object

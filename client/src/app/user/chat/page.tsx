@@ -19,14 +19,39 @@ const Home = () => {
 
     socket?.on("chat_msg", (data: any) => {
       console.log("data received from back", data);
-      setMessages((messages) => [
-        ...messages,
-        {
-          role: "assistant",
-          content: data,
-        },
-      ]);
-      setLoading(false);
+      const parsedData = JSON.parse(data);
+      console.log("parsedData", parsedData);
+      if (Array.isArray(parsedData) && parsedData.length === 0) {
+        setMessages((messages) => [
+          ...messages,
+          {
+            role: "assistant",
+            content: "No products found.",
+          },
+        ]);
+        setLoading(false);
+      } else {
+        const NewMessages = parsedData.map((product: any) => {
+          console.log("product", product);
+          // Create a message for the product image
+          const imageMessage = {
+            role: "assistant",
+            content: `${product[2]}`,
+          };
+
+          // Create a message for the product price
+          const priceMessage = {
+            role: "assistant",
+            content: `Price of ${product[1]}: ${product[5]}`,
+          };
+
+          // Return both messages for the current product
+          return [imageMessage, priceMessage];
+        });
+        console.log("NewMessages", NewMessages);
+        setMessages((prevMessages) => [...prevMessages, ...NewMessages.flat()]);
+        setLoading(false);
+      }
     });
 
     socket?.on("list_msg", (data: any) => {

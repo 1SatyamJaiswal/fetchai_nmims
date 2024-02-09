@@ -85,20 +85,20 @@ const Sales = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-8">
+    <div className="max-w-4xl mx-auto mt-8">
       <h2 className="text-2xl font-semibold mb-4">Total Sales</h2>
-      <div className="bg-white p-4 rounded-md shadow-md">
+      <div className="bg-white p-4 ">
         <Line data={chartData} options={chartOptions} />
         <div className="flex justify-between mt-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
             onClick={handlePrevPage}
             disabled={currentPage === 0}
           >
             Previous
           </button>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
             onClick={handleNextPage}
             disabled={endIndex >= totalSales.length}
           >

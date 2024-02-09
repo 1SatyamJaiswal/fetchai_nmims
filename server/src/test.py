@@ -24,32 +24,36 @@ db_name = "grocery"
 encoded_password = quote(db_password)
 current_directory = os.getcwd()
 database_file_path = os.path.join(current_directory, '..', 'inventory.db')
-mysql_uri = f"sqlite:///inventory.db"
-    
+# mysql_uri = f"sqlite:////C:/Users/Dell/Desktop/fetchai_nmims/server/inventory.db"
+
+study_and_database_name = "inventory"
+rdb_string_url = "sqlite:///" + os.path.join(dir, (study_and_database_name + ".db"))
+rdb_raw_bytes_url = r'{}'.format(rdb_string_url)
+
 # print(mysql_uri)
-db = SQLDatabase.from_uri(mysql_uri,sample_rows_in_table_info=3)
+db = SQLDatabase.from_uri(rdb_raw_bytes_url,sample_rows_in_table_info=3)
 
 # print(db.table_info)
-# db_chain = SQLDatabaseChain.from_llm(llm, db)
+db_chain = SQLDatabaseChain.from_llm(llm, db)
 
 # CHAT_SUPPORT_SEED = os.environ.get("CHAT_SUPPORT_SEED", "chat support agent")
 # CUSTOMER_CHAT_SEED = os.environ.get("CUSTOMER_CHAT_SEED", "customer chat agent")
 
-# agent = Agent(
-#     name="customer_chat_agent",
-#     seed=CUSTOMER_CHAT_SEED,
-# )
+# # agent = Agent(
+# #     name="customer_chat_agent",
+# #     seed=CUSTOMER_CHAT_SEED,
+# # )
 
-# fund_agent_if_low(agent.wallet.address())
-
-
-# @agent.on_event("startup")
-# async def startup(ctx: Context):
-#     ctx.logger.info("Chat Support Agent Started")
-#     pass
+# # fund_agent_if_low(agent.wallet.address())
 
 
-# @agent.on_message(model=ChatSupportMessage)
+# # @agent.on_event("startup")
+# # async def startup(ctx: Context):
+# #     ctx.logger.info("Chat Support Agent Started")
+# #     pass
+
+
+# # @agent.on_message(model=ChatSupportMessage)
 # # async def message_handler(ctx: Context, sender: str, msg: ChatSupportMessage):
 # #     ctx.logger.info("Chat Support Agent Received Message")
 # print("query received: ", "milk")
@@ -60,11 +64,11 @@ db = SQLDatabase.from_uri(mysql_uri,sample_rows_in_table_info=3)
 
 # Query: {Query}""")
 
-# msg = prompt.format(Query="banana", sample="""Sample response: {
+# msg = prompt.format(Query=msg.query, sample="""Sample response: {
 # "ingredients": [List of all ingredients]
 # }""")
 # response = llm(msg)
-connection = sqlite3.connect("C:\\Users\\Siddhant Rao\\Desktop\\fetchai_nmims\\server\\src\\inventory.db")
+# connection = sqlite3.connect(mysql_uri)
 # cursor = connection.cursor()
 
 # # Convert the ingredients list to a tuple for SQL query

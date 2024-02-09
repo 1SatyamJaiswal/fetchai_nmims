@@ -11,18 +11,26 @@ export const ChatMessage: FC<Props> = ({ message }) => {
     return str.startsWith("data:image");
   };
 
+  const isImage = (str: string) => {
+    return str.startsWith("data:image") || str.startsWith('https://');
+  };
+
   return (
     <div
       className={`flex flex-col ${
         message.role === "assistant" ? "items-start" : "items-end"
       }`}
     >
-      {isBase64Image(message.content) ? (
-        <img
-          src={message.content}
-          alt="Base64 Image"
-          className="rounded-2xl max-w-[67%]"
-        />
+      {isImage(message.content) ? (
+        isBase64Image(message.content) ? (
+          <img
+            src={message.content}
+            alt="Base64 Image"
+            className="rounded-2xl max-w-[67%]"
+          />
+        ) : (
+          <img src={message.content} className="rounded-2xl max-w-[67%] max-h-[250px]" />
+        )
       ) : (
         <div
           className={`flex items-center ${
